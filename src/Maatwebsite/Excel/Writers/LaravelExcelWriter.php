@@ -378,7 +378,7 @@ class LaravelExcelWriter {
      * @param  boolean $returnInfo
      * @return LaravelExcelWriter|array
      */
-    public function store($ext = 'xls', $path = false, $returnInfo = false)
+    public function store($ext = 'xls', $path = false, $customFilename = false, $returnInfo = false)
     {
         // Set the storage path
         $this->_setStoragePath($path);
@@ -389,8 +389,15 @@ class LaravelExcelWriter {
         // Render the XLS
         $this->_render();
 
-        // Set the storage path and file
-        $toStore = $this->storagePath . DIRECTORY_SEPARATOR . $this->filename . '.' . $this->ext;
+        // Check if custom filename is specified.
+        if ($customFilename)
+        {
+            // Set the storage path and file
+            $toStore = $this->storagePath . DIRECTORY_SEPARATOR . $customFilename . '.' . $this->ext;
+        } else {
+            // Set the storage path and file
+            $toStore = $this->storagePath . DIRECTORY_SEPARATOR . $this->filename . '.' . $this->ext;
+        }
 
         // Save the file to specified location
         $this->writer->save($toStore);
